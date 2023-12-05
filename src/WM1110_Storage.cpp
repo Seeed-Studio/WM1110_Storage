@@ -1,5 +1,4 @@
 #include "WM1110_Storage.hpp"
-#include <WM1110_At_Config.hpp>
 
 
 #include <Adafruit_LittleFS.h>
@@ -12,10 +11,11 @@
 #include <stdbool.h>
 #include <string.h>
 
+#include <Lbm_Modem_Common.hpp>
 #include "internal/nrf_hal/system.hpp"
 #include "internal/nrf_hal/trace.hpp"
 #include "internal/Wm1110Hardware.hpp"
-#include "WM1110_Geolocation.hpp"
+#include <WM1110_Geolocation.hpp>
 
 
 using namespace Adafruit_LittleFS_Namespace;
@@ -469,10 +469,7 @@ bool WM1110_Storage::readSinglePositionData(pos_msg_param_t *pos_data, uint16_t 
 
 int8_t WM1110_Storage::deletePositionData(uint16_t del_cnt)
 {
-    uint8_t rc = 0;
-    uint16_t app_tag_id = 0;
-    uint16_t cursor_dir = 0;    
-    uint8_t del_status = 0;
+    uint16_t app_tag_id = 0; 
     uint16_t rlen1 = sizeof(pos_msg_file_id_t);
     pos_msg_file_id_t pos_msg_file_temp;
     memset(&pos_msg_file_temp,0,rlen1);
@@ -851,7 +848,6 @@ bool WM1110_Storage::writePositionFileID()
 
 bool WM1110_Storage::refreshPositionFileID()
 {
-    uint16_t rlen = 0;
 
     pos_msg_file_id.file_id_cur++;
     pos_msg_file_id.log_cnt++;
@@ -881,8 +877,6 @@ void WM1110_Storage::loadGnssGroupID(void)
 {
     uint8_t ret = 0;    
     uint16_t test_data_len= 0;  
-    uint32_t group_id_temp;
-    uint8_t len = sizeof(group_id_temp);
 
     test_data_len = sizeof(gnss_group_param_t );
     ret = readLfsFile(group_id_info_file,(uint8_t *)&app_gnss_group_param,&test_data_len);
